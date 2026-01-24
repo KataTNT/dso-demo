@@ -13,6 +13,9 @@ spec:
       volumeMounts:
         - name: m2
           mountPath: /root/.m2/
+        - name: settings-xml
+          mountPath: /root/.m2/settings.xml
+          subPath: settings.xml
     - name: docker-tools
       image: rmkanda/docker-tools:latest
       command:
@@ -50,6 +53,9 @@ spec:
     - name: m2
       hostPath:
         path: /tmp/.m2/
+    - name: settings-xml
+      secret:
+        secretName: m2-settings
     - name: docker-sock
       hostPath:
         path: /var/run
