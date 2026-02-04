@@ -61,7 +61,7 @@ spec:
         path: /tmp/.m2/
     - name: settings-xml
       secret:
-        secretName: m2-settings
+        secretName: maven-settings
     - name: docker-sock
       hostPath:
         path: /var/run
