@@ -123,16 +123,6 @@ pipeline {
           }
         }
       }
-      steps {
-        container('trivy') {
-          sh 'trivy image --format html --output trivy-report.html docker.io/katatnt/dso-demo:latest || true'
-        }
-      }
-      post {
-        success {
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'trivy-report.html', fingerprint: true, onlyIfSuccessful: true
-        }
-      }
     }
 
     stage('Deploy to Dev') {
