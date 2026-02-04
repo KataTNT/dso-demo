@@ -49,6 +49,7 @@
 				<version>12.1.6</version>
 				<configuration>
           			<ossIndexServerId>ossindex</ossIndexServerId>
+					<failBuildOnCVSS>8</failBuildOnCVSS>
         		</configuration>
 				<executions>
 					<execution>
