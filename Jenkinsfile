@@ -5,6 +5,7 @@ pipeline {
       defaultContainer 'maven'
       idleMinutes 1
     }
+    environment 'NVD_TOKEN': credentials('nvd-token')
   }
   stages {
     stage('Build') {
@@ -49,9 +50,9 @@ pipeline {
         stage('SCA') {
           steps {
             container('maven') {
-              withCredentials([usernamePassword(credentialsId: 'ossindex-creds', passwordVariable: 'OSSINDEX_PASSWORD', usernameVariable: 'OSSINDEX_USERNAME')]) {
+              withCredentials([usernamePassword(credentialsId: 'ossindex-creds', passwordVariable: 'OSSINDEX_PASSWORD', usernameVariable: 'OSSINDEX_USERNAME')],) {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                  sh 'mvn org.owasp:dependency-check-maven:check -DossIndexUsername="${OSSINDEX_USERNAME}" -DossIndexPassword="${OSSINDEX_PASSWORD}"'
+                  sh 'mvn org.owasp:dependency-check-maven:check'
                 }
               }
             }
