@@ -5,7 +5,9 @@ pipeline {
       defaultContainer 'maven'
       idleMinutes 1
     }
-    environment 'NVD_TOKEN': credentials('nvd-token')
+  }
+  environment {
+    NVD_TOKEN = credentials('nvd-token')
   }
   stages {
     stage('Build') {
