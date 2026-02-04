@@ -106,6 +106,35 @@ pipeline {
       }
     }
 
+    stage('Image Analysis') {
+      parallel {
+        stage('Image Linting') {
+          steps{
+            container('docker-tools') {
+              sh 'dockle docker.io/katatnt/dso-demo'
+            }
+          }
+        }
+        stage('Image Scan') {
+          steps {
+            container('docker-tools') {
+              sh 'trivy image --timeout 10m --exit-code 1 katatnt/dso-demo'
+            }
+          }
+        }
+      }
+      steps {
+        container('trivy') {
+          sh 'trivy image --format html --output trivy-report.html docker.io/katatnt/dso-demo:latest || true'
+        }
+      }
+      post {
+        success {
+          archiveArtifacts allowEmptyArchive: true, artifacts: 'trivy-report.html', fingerprint: true, onlyIfSuccessful: true
+        }
+      }
+    }
+
     stage('Deploy to Dev') {
       steps {
         // TODO
